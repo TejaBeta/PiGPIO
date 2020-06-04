@@ -1,8 +1,6 @@
 package main
 
-import "log"
-
 func main() {
-	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile)
-	log.Println("Hello")
+	io := BasicIO{Pin: 10, IsOutput: true, IsToggle: true}
+	io.SetPin()
 }
