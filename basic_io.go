@@ -2,18 +2,28 @@ package main
 
 import (
 	"log"
+	. "log"
 	"os"
 	"time"
 
 	"github.com/stianeikeland/go-rpio"
 )
 
+/*
+BasicIO struct defines the IO pin struct, it contains
+Pin a valid integer of 32-bit
+Mode a valid integer
+0 := input
+1 :- output with low
+2 := output with high
+3 :- output with toggle
+*/
 type BasicIO struct {
-	Pin      int
-	IsOutput bool
-	IsToggle bool
+	Pin  int
+	Mode int
 }
 
+// SetPin is used to test mode of pin
 func (io *BasicIO) SetPin() {
 
 	pin := rpio.Pin(io.Pin)
@@ -27,17 +37,26 @@ func (io *BasicIO) SetPin() {
 	// Unmap gpio memory when done
 	defer rpio.Close()
 
-	if io.IsOutput {
-		pin.Output()
-	} else {
+	switch io.Mode {
+	case 0:
 		pin.Input()
-	}
+		Println(pin.Read())
+	case 1:
+		pin.Output()
+		pin.Low()
 
-	for x := 0; x < 20; x++ {
-		if io.IsToggle {
+	case 2:
+		pin.Output()
+		pin.High()
+
+	case 3:
+		pin.Output()
+		for x := 0; x < 20; x++ {
 			pin.Toggle()
+			time.Sleep(time.Second / 5)
 		}
-		time.Sleep(time.Second / 5)
+	default:
+		log.Println("Inside default")
 	}
 
 }

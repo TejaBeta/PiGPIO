@@ -1,6 +1,6 @@
 package main
 
 func main() {
-	io := BasicIO{Pin: 10, IsOutput: true, IsToggle: true}
+	io := BasicIO{Pin: 10, Mode: 3}
 	io.SetPin()
 }
